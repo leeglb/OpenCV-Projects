@@ -19,3 +19,6 @@ Project 2: Alarm-System
 1. Mediapipe 
 2. OpenCv
 3. Ultralytics - YOLOV8
+4. Playsound 
+5. Twilio 
+6. Trycourier 

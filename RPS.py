@@ -66,7 +66,7 @@ with mp_hands.Hands(
         
         if results.multi_hand_landmarks:
             for hand_landmarks, handed in zip(results.multi_hand_landmarks, results.multi_handedness):
-                
+                    
                 mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
                 which_hand = handed.classification[0].label

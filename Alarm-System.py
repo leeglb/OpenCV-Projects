@@ -1,33 +1,69 @@
 import cv2
+import courier 
+from courier.client import Courier 
+from ultralytics import YOLO
+from playsound3 import playsound
+from datetime import datetime 
 
-from ultralytics import solutions
+# Video Capture Parameters
 
-cap = cv2.VideoCapture(0)
-assert cap.isOpened(), "Error reading video file"
+cap = cv2.VideoCapture(1)
+assert cap.isOpened(), "Error opening camera"
 
-# Video writer
-w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
-video_writer = cv2.VideoWriter("security_output.avi", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+"""
+Model Paramaters: 
+"""
 
+model = YOLO("yolov8n.pt")
 
-# Process video
-while cap.isOpened():
-    success, im0 = cap.read()
+# Global Parameters: 
 
+alarm_activated = False 
+
+while True:
+    success, frame = cap.read()
     if not success:
-        print("Video frame is empty or video processing has been successfully completed.")
+        print("Failed to read frame from camera.")
         break
 
+    current_datetime = datetime.now()
+    
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-    # print(results)  # access the output
+    
+    results = model.predict(source=frame, classes=[0])
+   
+    annotated_frame = results[0].plot()
+    
+    cv2.putText(annotated_frame, f"Current Time: {formatted_datetime}", (0, 100), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+    
+    # Alarm System Function 
+    
+    print(current_datetime.second)
+
+    if alarm_activated:  
+        
+        playsound("/Users/galbraithlee/Desktop/OpenCV-Projects/Intruder Alert Warning System.mp3")
+        
+    else: 
+        
+        alarm_activated = False 
 
 
     key = cv2.waitKey(1) & 0xFF
-
+    
+    audio_key = cv2.waitKey(30) & 0xFF
+    
     if key == ord('q'):
         
-        cap.release()
-        cv2.destroyAllWindows()  # destroy all opened windows
-            
         break
+    
+    if audio_key == ord('s'):
         
+        alarm_activated = True 
+        
+        
+    cv2.imshow("Detections", annotated_frame)
+
+cap.release()
+cv2.destroyAllWindows()
