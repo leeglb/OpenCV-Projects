@@ -1,10 +1,24 @@
-The following project folder contains files for the following projects:
 
 
-1. RPS.py --> Rock Paper Scissors (Using mediapipe & opencv)
-2. Alarm-System.py --> Alarm System 
 
 
-This project folder is to learn the capabilities and experiment with both facial, body and finger tracking.
-Ultimately, whilst this is quite the beginner friendly coding, it is a great experience 
-and fun project series. 
+
+
+Project 1: Rock Paper Scissors
+
+-- Packages Installed -- 
+1. Mediapipe
+2. OpenCv
+3. Random
+4. Time
+5. Datetime 
+
+Project 2: Alarm-System
+
+-- Packages Installed -- 
+1. Mediapipe 
+2. OpenCv
+3. Ultralytics - YOLOV8
+4. Playsound 
+5. Twilio 
+6. Trycourier 
