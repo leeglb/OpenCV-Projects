@@ -35,6 +35,10 @@ ai_score = 0
 
 player_score = 0 
 
+player_won = False
+
+ai_won = False
+
 # ------------------
 
 mp_drawing = mp.solutions.drawing_utils
@@ -71,6 +75,7 @@ with mp_hands.Hands(
 
         
         if results.multi_hand_landmarks:
+
             for hand_landmarks, handed in zip(results.multi_hand_landmarks, results.multi_handedness):
                     
                 mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
@@ -176,6 +181,10 @@ with mp_hands.Hands(
 
                         cv2.putText(image, str(time_remaining), (20, 300), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
+                        player_won = False
+
+                        ai_won = False 
+
                         if time_remaining <= 0: 
 
                             match current_action: 
@@ -184,62 +193,81 @@ with mp_hands.Hands(
 
                                     if RPS_random == "Rock":
 
-                                        cv2.putText(image, "Tie", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        player_won = False
+
+                                        ai_won = False
 
                                     elif RPS_random == "Scissors":
-
-                                        cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                                         
-                                        player_score += 1 
+                                        player_won = True
 
-                                    elif RPS_random == "Paper": 
+                                        ai_won = False 
 
-                                        cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                    elif RPS_random == "Paper":
                                         
-                                        ai_score += 1
+                                        ai_won = True
+
+                                        player_won = False
 
                                 case "Paper":
 
                                     if RPS_random == "Rock":
-
-                                        cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                                         
-                                        player_score += 1 
+                                        player_won = True
+
+                                        ai_won = False
 
                                     elif RPS_random == "Scissors":
-
-                                        cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                                         
-                                        ai_score += 1
+                                        ai_won = True 
+
+                                        player_won = False
 
                                     elif RPS_random == "Paper": 
 
-                                        cv2.putText(image, "Tie", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        player_won = False
+
+                                        ai_won = False
 
 
                                 case "Scissors":
 
                                     if RPS_random == "Rock":
 
-                                        cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-                                        
-                                        ai_score += 1 
+                                        ai_won = True  
+
+                                        player_won = False
 
                                     elif RPS_random == "Scissors":
 
-                                        cv2.putText(image, "Tie!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        player_won = False
+
+                                        ai_won = False 
 
                                     elif RPS_random == "Paper": 
 
-                                        cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-                                        
-                                        player_score += 1 
+                                        player_won = True 
 
-                    else: 
+                                        ai_won = False
 
-                        game_started = False
+                            if player_won:
+
+                                cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+
+                                player_score += 1 
+
+                            elif ai_won: 
+
+                                cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+
+                                ai_score += 1 
+
+                            #else:
+
+                                cv2.putText(image, "Tie!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
 
+                            game_started = False 
 
 
                 fps = str(val) + ' fingers'
@@ -247,16 +275,21 @@ with mp_hands.Hands(
 
                 # cv2.putText(image, fin, (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
-                cv2.putText(image, "Current Action: " + current_action, (20, 1050), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
+                cv2.putText(image, "Current Action: " + current_action, (20, 550), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                 
-                cv2.putText(image, "Current Player Score: " + str(player_score), (20, 100), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
-                cv2.putText(image, "Current Computer Score: " + str(ai_score), (20, 1500), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
+                cv2.putText(image, "Current Player Score: " + str(player_score), (20, 100), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                cv2.putText(image, "Current Computer Score: " + str(ai_score), (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                 #cv2.putText(image, RPS_random, (20, 500), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
-                
-       
+        cv2.resizeWindow(WINDOW_NAME, 1800, 1440)
         cv2.imshow(WINDOW_NAME, image)
+
         
+        print("Player: " + str(player_won))
+
+        print("AI: " + str(ai_won))
+
+
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord('q'):
@@ -270,6 +303,8 @@ with mp_hands.Hands(
             RPS_random = random.choice(RPS_list)
 
             countdown = time.time() + DURATION
+
+
 
 cap.release()
 
