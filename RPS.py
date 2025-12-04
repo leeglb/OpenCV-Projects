@@ -27,15 +27,21 @@ countdown = 0.0
 
 # ------------------
 
+# ------------------
+
+# Score Variables
+
+ai_score = 0 
+
+player_score = 0 
+
+# ------------------
 
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
 
 cap = cv2.VideoCapture(0)
-
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
 
 WINDOW_NAME = "MediaPipe Hands" 
 cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
@@ -183,20 +189,28 @@ with mp_hands.Hands(
                                     elif RPS_random == "Scissors":
 
                                         cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        player_score += 1 
 
                                     elif RPS_random == "Paper": 
 
                                         cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        ai_score += 1
 
                                 case "Paper":
 
                                     if RPS_random == "Rock":
 
                                         cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        player_score += 1 
 
                                     elif RPS_random == "Scissors":
 
                                         cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        ai_score += 1
 
                                     elif RPS_random == "Paper": 
 
@@ -208,6 +222,8 @@ with mp_hands.Hands(
                                     if RPS_random == "Rock":
 
                                         cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        ai_score += 1 
 
                                     elif RPS_random == "Scissors":
 
@@ -216,6 +232,8 @@ with mp_hands.Hands(
                                     elif RPS_random == "Paper": 
 
                                         cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                        
+                                        player_score += 1 
 
                     else: 
 
@@ -229,13 +247,15 @@ with mp_hands.Hands(
 
                 # cv2.putText(image, fin, (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
-                cv2.putText(image, "Current Action: " + current_action, (20, 400), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                cv2.putText(image, "Current Action: " + current_action, (20, 1050), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
                 
+                cv2.putText(image, "Current Player Score: " + str(player_score), (20, 100), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
+                cv2.putText(image, "Current Computer Score: " + str(ai_score), (20, 1500), cv2.FONT_HERSHEY_DUPLEX, 2.5, (255, 255, 255), 2)
                 #cv2.putText(image, RPS_random, (20, 500), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
                 
-        resize = cv2.resize(image, (600,600))
-        cv2.imshow(WINDOW_NAME, resize)
+       
+        cv2.imshow(WINDOW_NAME, image)
         
         key = cv2.waitKey(1) & 0xFF
 
