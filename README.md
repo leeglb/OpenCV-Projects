@@ -1,3 +1,5 @@
+<h1>Rock Paper Scissors (ML & OpenCV) </h1>
+
 With the evergrowing technology prowess of facial recognition, the importance of utilising and understanding the core principles and technology of it is a must.
 Facial recognition software is crucial in modern day society for its wide-ranging applications in security, convenience and efficiency. 
 Offering a fast and convenient method for authentication, scanning and providing as a powerful tool for law enforcement to identify suspects and locate missing personel.
