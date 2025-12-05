@@ -41,6 +41,16 @@ ai_won = False
 
 # ------------------
 
+# ------------------
+
+# Other Variables 
+
+START_TEXT = "Press s to start:"
+CURRENTA_TEXT = "" #set the following to nothing before start screen is clicked. 
+CURRENTP_TEXT = ""
+CURRENTC_TEXT = ""
+
+
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
@@ -252,19 +262,11 @@ with mp_hands.Hands(
 
                             if player_won:
 
-                                cv2.putText(image, "You Win!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-
                                 player_score += 1 
 
                             elif ai_won: 
 
-                                cv2.putText(image, "You Lost!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-
-                                ai_score += 1 
-
-                            #else:
-
-                                cv2.putText(image, "Tie!", (20, 450), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                                ai_score += 1
 
 
                             game_started = False 
@@ -275,19 +277,17 @@ with mp_hands.Hands(
 
                 # cv2.putText(image, fin, (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
-                cv2.putText(image, "Current Action: " + current_action, (20, 550), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-                
-                cv2.putText(image, "Current Player Score: " + str(player_score), (20, 100), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
-                cv2.putText(image, "Current Computer Score: " + str(ai_score), (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
                 #cv2.putText(image, RPS_random, (20, 500), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
 
-        cv2.resizeWindow(WINDOW_NAME, 1800, 1440)
-        cv2.imshow(WINDOW_NAME, image)
 
+                cv2.putText(image, CURRENTA_TEXT, (20, 550), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                cv2.putText(image, CURRENTP_TEXT, (20, 100), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
+                cv2.putText(image, CURRENTC_TEXT, (20, 200), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2)
         
-        print("Player: " + str(player_won))
 
-        print("AI: " + str(ai_won))
+        if START_TEXT != "":
+
+            cv2.putText(image, START_TEXT, (20, 100), cv2.FONT_HERSHEY_DUPLEX, 1, (255,255,255), 2)
 
 
         key = cv2.waitKey(1) & 0xFF
@@ -296,15 +296,30 @@ with mp_hands.Hands(
             
             break
         
+        # press s to start --> add a start screen? 
+
         if key == ord('s'):
+
+            START_TEXT = ""
 
             game_started = True 
 
             RPS_random = random.choice(RPS_list)
 
+            # Text variables: 
+
+            CURRENTA_TEXT = str("Current Action: " + current_action)
+            CURRENTP_TEXT = str("Current Player Score: " + str(player_score))
+            CURRENTC_TEXT = str("Current Computer Score: " + str(ai_score))
+
+            # Countdown restart for when the game starts.
+
             countdown = time.time() + DURATION
 
+        cv2.resizeWindow(WINDOW_NAME, 1800, 1440)
+        cv2.imshow(WINDOW_NAME, image)
 
+# End of loop 
 
 cap.release()
 
